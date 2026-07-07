@@ -31,5 +31,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/erlang/docs # Path where Gleam outputs documentation
-
+          publish_dir: ./build/dev/docs/nerdfont_cheatsheet

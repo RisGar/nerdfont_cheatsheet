@@ -8,7 +8,7 @@ target = "erlang"
 #
 description = "Cheatsheet for Nerd Font Symbols to use with a fuzzy finder like tv"
 licences = ["EUPL-1.2"]
-repository = { type = "github", user = "RisGar", repo = "nerdfont-cheatsheet" }
+repository = { type = "github", user = "RisGar", repo = "nerdfont_cheatsheet" }
 # links = [{ title = "Website", href = "" }]
 #
 # For a full reference of all the available options, you can have a look at

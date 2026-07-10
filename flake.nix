@@ -21,10 +21,7 @@
           inherit (nix-gleam.packages.${system}) buildGleamApplication;
         in
         {
-          nerdfonts-cheatsheet = buildGleamApplication {
-            src = lib.cleanSource ./.;
-            erlangPackage = pkgs.beamMinimal29Packages.erlang;
-          };
+          nerdfonts-cheatsheet = pkgs.callPackage ./. { inherit buildGleamApplication; };
           default = self.packages.${system}.nerdfonts-cheatsheet;
         }
       );
@@ -33,11 +30,27 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          glyphs =
+            pkgs.fetchFromGitHub {
+              owner = "ryanoasis";
+              repo = "nerd-fonts";
+              rev = "v3.4.0";
+              hash = "sha256-yr1v8gIUjNob1xcJB4r88CCRx/08Zbwg3PUCdQjUqik=";
+            }
+            + "/bin/scripts/lib";
+
         in
         {
           default = pkgs.mkShell {
             inputsFrom = [ self.packages.${system}.nerdfonts-cheatsheet ];
             packages = with pkgs; [ gleam ];
+
+            shellHook = ''
+              echo "  linking glyphs..."
+
+              mkdir -p ./priv
+              ln -sfn ${glyphs} ./priv/glyphs
+            '';
           };
         }
       );

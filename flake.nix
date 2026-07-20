@@ -18,10 +18,11 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          inherit (nix-gleam.packages.${system}) buildGleamApplication;
         in
         {
-          nerdfonts-cheatsheet = pkgs.callPackage ./. { inherit buildGleamApplication; };
+          nerdfonts-cheatsheet = pkgs.callPackage ./. {
+            inherit (nix-gleam.packages.${system}) buildGleamApplication;
+          };
           default = self.packages.${system}.nerdfonts-cheatsheet;
         }
       );

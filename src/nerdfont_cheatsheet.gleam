@@ -22,27 +22,32 @@ fn print_all(glyphs: List(glyphs.Glyph)) -> Result(Nil, String) {
 }
 
 fn get_symbol(str: String) -> Result(Nil, String) {
-  use symbol <- result.try(
-    str
-    |> string.split(on: " ")
-    |> list.first()
-    |> result.map_error(fn(_) { "could not parse symbol" }),
-  )
+  use symbol <- result.try(case string.split(str, on: " ") {
+    [_, _, symbol, ..] -> Ok(symbol)
+    _ -> Error("could not parse symbol")
+  })
 
   io.println(symbol)
 
   Ok(Nil)
 }
 
-pub fn main() -> Result(Nil, String) {
-  use glyphs <- result.try(glyphs.get_glyphs())
+pub fn main() {
+  let result = {
+    use glyphs <- result.try(glyphs.get_glyphs())
 
-  case argv.load().arguments {
-    ["print"] -> print_all(glyphs)
-    ["get", str] -> get_symbol(str)
-    _ -> {
-      io.println("usage: ./program <print> | <get> [str]")
-      Ok(Nil)
+    case argv.load().arguments {
+      ["print"] -> print_all(glyphs)
+      ["get", str] -> get_symbol(str)
+      _ -> {
+        io.println("usage: ./program <print> | <get> [str]")
+        Ok(Nil)
+      }
     }
+  }
+
+  case result {
+    Ok(_) -> Nil
+    Error(err) -> panic as { "error: " <> err }
   }
 }

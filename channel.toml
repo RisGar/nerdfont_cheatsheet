@@ -1,0 +1,16 @@
+[metadata]
+name = "nerdfont"
+description = "A channel to search for nerd font symbols"
+
+[source]
+command = "nerdfont_cheatsheet print"
+
+[preview]
+command = "nerdfont_cheatsheet get '{}'"
+
+[actions.copy]
+command = "nerdfont_cheatsheet get '{}' | pbcopy"
+
+[keybindings]
+enter = "actions:copy"
+
